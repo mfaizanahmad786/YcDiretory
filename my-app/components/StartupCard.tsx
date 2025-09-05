@@ -1,6 +1,8 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface StartupCardProps {
+  id?: string;
   date?: string;
   views?: number;
   author?: string;
@@ -14,6 +16,7 @@ interface StartupCardProps {
 }
 
 const StartupCard: React.FC<StartupCardProps> = ({
+  id = "1",
   date = "20 May, 2023",
   views = 232,
   author = "Steven Smith",
@@ -26,7 +29,8 @@ const StartupCard: React.FC<StartupCardProps> = ({
   placeholderText = "ECO"
 }) => {
   return (
-    <div className="bg-white hover:bg-[#FFE8F0] rounded-3xl border-4 border-black hover:border-[#EE2B69] p-4 max-w-sm mx-auto shadow-lg border-r-8 border-b-8 transition-all duration-300 ease-in-out cursor-pointer">
+    <Link href={`/startup/${id}`} className="group block">
+      <div className="bg-white hover:bg-[#FFE8F0] rounded-3xl border-4 border-black hover:border-[#EE2B69] p-4 max-w-sm mx-auto shadow-lg border-r-8 border-b-8 transition-all duration-300 ease-in-out cursor-pointer">
       {/* Header with date and views */}
       <div className="flex justify-between items-center mb-3">
         <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
@@ -72,6 +76,7 @@ const StartupCard: React.FC<StartupCardProps> = ({
         </button>
       </div>
     </div>
+    </Link>
   );
 };
 

@@ -12,7 +12,7 @@ const RecommendedStartups = () => {
         
         {/* Single Startup Card */}
         <div className="flex justify-center">
-          <StartupCard />
+          <StartupCard id="1" />
         </div>
       </div>
     </section>
