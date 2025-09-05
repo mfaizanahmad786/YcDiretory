@@ -1,15 +1,51 @@
 @import "tailwindcss";
 
+/* Work Sans Font Family */
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/assets/fonts/WorkSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/assets/fonts/WorkSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/assets/fonts/WorkSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/assets/fonts/WorkSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/assets/fonts/WorkSans-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('/assets/fonts/WorkSans-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +58,245 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Work Sans', Arial, Helvetica, sans-serif;
+}
+
+/* Fix all input text colors */
+input, textarea, select {
+  color: #000000 !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Ensure form field text is black */
+input[type="text"], 
+input[type="email"], 
+input[type="url"], 
+input[type="password"], 
+textarea {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="url"]:focus, 
+input[type="password"]:focus, 
+textarea:focus {
+  color: #000000 !important;
+}
+
+/* Vertical line pattern for hero section */
+@layer utilities {
+  .pattern {
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 20px,
+      rgba(255, 255, 255, 0.2) 20px,
+      rgba(255, 255, 255, 0.2) 22px
+    );
+  }
+}
+
+/* Override Tailwind's default input styling */
+@layer base {
+  input, textarea {
+    color: #000000 !important;
+  }
+  
+  input::placeholder, textarea::placeholder {
+    color: #6b7280 !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Additional input overrides */
+.bg-white input,
+.bg-white textarea {
+  color: #000000 !important;
+}
+
+/* Force all form controls to have black text */
+form input[type="text"],
+form input[type="email"], 
+form input[type="url"],
+form textarea,
+div input[type="text"],
+div input[type="email"], 
+div input[type="url"],
+div textarea {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
+
+/* Custom Markdown Editor Styles */
+.w-md-editor {
+  background: transparent !important;
+  border: none !important;
+}
+
+.w-md-editor *, 
+.w-md-editor-text-container *, 
+.w-md-editor-text-input *, 
+.w-md-editor-text-textarea * {
+  color: #000000 !important;
+}
+
+.w-md-editor-text-container, 
+.w-md-editor-text-input, 
+.w-md-editor-text-textarea {
+  font-family: 'Work Sans', sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: #000000 !important;
+}
+
+.w-md-editor-text-textarea {
+  min-height: 200px !important;
+  border: none !important;
+  outline: none !important;
+  resize: none !important;
+  color: #000000 !important;
+  background: #ffffff !important;
+}
+
+/* Force text area content to be black */
+.w-md-editor .w-md-editor-text-textarea {
+  color: #000000 !important;
+}
+
+.w-md-editor-text-textarea::placeholder {
+  color: #6b7280 !important;
+}
+
+.w-md-editor-toolbar {
+  background: #1f2937 !important;
+  border-bottom: 2px solid #374151 !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  padding: 8px 12px !important;
+  color: white !important;
+}
+
+.w-md-editor-toolbar-item button {
+  color: #ffffff !important;
+  border: 1px solid #374151 !important;
+  background: #374151 !important;
+  border-radius: 4px !important;
+  margin: 0 2px !important;
+  width: 32px !important;
+  height: 32px !important;
+  font-weight: 500 !important;
+}
+
+.w-md-editor-toolbar-item button svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+.w-md-editor-toolbar-item button:hover {
+  background: #4b5563 !important;
+  border-color: #6b7280 !important;
+  color: #ffffff !important;
+}
+
+.w-md-editor-toolbar-item button:hover svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+.w-md-editor-toolbar-item button.active {
+  background: #ec4899 !important;
+  border-color: #ec4899 !important;
+  color: #ffffff !important;
+}
+
+.w-md-editor-toolbar-item button.active svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Make the preview text also black */
+.w-md-editor-preview {
+  color: #000000 !important;
+  background: #ffffff !important;
+}
+
+.w-md-editor-preview * {
+  color: #000000 !important;
+}
+
+/* Override any global button styling for the markdown editor toolbar */
+.w-md-editor-toolbar button,
+.w-md-editor-toolbar-item button,
+.w-md-editor-toolbar * {
+  color: #ffffff !important;
+}
+
+.w-md-editor-toolbar button svg,
+.w-md-editor-toolbar-item button svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* Custom Quill Editor Styles */
+.ql-editor {
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 200px;
+  font-family: 'Work Sans', sans-serif;
+  padding: 20px;
+  color: #0a0a0a;
+}
+
+.ql-toolbar {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  background: #f9fafb;
+  padding: 12px 16px;
+  color:black
+}
+
+.ql-container {
+  border: none !important;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.ql-editor.ql-blank::before {
+  color: #9ca3af;
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* Focus state for the editor container */
+.ql-editor:focus {
+  outline: none;
+}
+
+/* Custom toolbar button styles */
+.ql-toolbar .ql-formats {
+  margin-right: 15px;
+}
+
+.ql-toolbar button {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  margin: 0 2px;
+}
+
+.ql-toolbar button:hover {
+  background-color: #e5e7eb;
+}
+
+.ql-toolbar button.ql-active {
+  background-color: #ec4899;
+  color: white;
 }
