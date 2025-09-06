@@ -71,7 +71,7 @@ const StartupCard: React.FC<StartupCardProps> = ({
       {/* Footer */}
       <div className="flex justify-between items-center">
         <span className="text-gray-600 font-medium text-sm">{category}</span>
-        <button className="bg-black text-white px-4 py-1.5 rounded-full font-medium hover:bg-gray-800 transition-colors text-sm">
+        <button className="bg-black text-white px-4 py-1.5 rounded-full font-medium hover:bg-gray-800 transition-colors text-sm cursor-pointer">
           Details
         </button>
       </div>
