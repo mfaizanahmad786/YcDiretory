@@ -8,11 +8,12 @@ interface StartupPageProps {
   };
 }
 
-const StartupPage = ({ params }: StartupPageProps) => {
+const StartupPage = async ({ params }: StartupPageProps) => {
+    const {id} = await params
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <StartupDetail startupId={params.id} />
+      <StartupDetail startupId={id} />
     </div>
   );
 };

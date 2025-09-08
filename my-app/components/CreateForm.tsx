@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { FaPaperPlane } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 // Dynamically import MDEditor to avoid SSR issues
 const MDEditor = dynamic(
@@ -17,6 +19,11 @@ const CreateForm = () => {
     imageLink: '',
     pitch: ''
   });
+  const [error, setError] = useState<string | undefined>()
+
+  const router = useRouter()
+
+  const {data: session, status} = useSession()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -33,11 +40,42 @@ const CreateForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    // Handle form submission here
+    
+    try{
+      
+      const response = await fetch('/api/startups',{
+        method:'POST',
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
+
+      if(response.ok){
+        console.log("Startup created succesfully")
+        router.push('/profile')
+        router.refresh()
+      }else{
+        setError(data.error || "Something went wrong")
+      }
+    }catch(error){
+      setError("Network error")
+    }
   };
+
+  if (status === "unauthenticated") {
+    // Optionally, redirect or show a message
+    return (
+      <div className="w-full min-h-[60vh] flex items-center justify-center">
+        <p className="text-xl font-semibold text-red-600">You must be signed in to submit a startup pitch.</p>
+      </div>
+    );
+  }
   return (
     <div className="w-full">
       {/* Hero Section with Vertical Lines Pattern - Same as Home Page */}
@@ -63,6 +101,11 @@ const CreateForm = () => {
       <div className="w-full bg-gray-50 py-16">
         <div className="max-w-2xl mx-auto px-4">
           <form onSubmit={handleSubmit} className="space-y-8">
+
+            {error && (
+              <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-x">{error}</div>
+            )}
+
             {/* Title Field */}
             <div>
               <label className="block text-black font-bold text-sm mb-3 uppercase tracking-wider">

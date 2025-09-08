@@ -1,11 +1,99 @@
-import React from 'react';
+'use client'
+
+import React, { useEffect, useState } from 'react';
 import StartupCard from './StartupCard';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 interface StartupDetailProps {
   startupId: string;
 }
 
+interface Startup{
+    id: string;
+  title: string;
+  description: string;
+  category: string;
+  imageLink: string | null;
+  pitch: string;
+  views: number;
+  createdAt: string;
+  updatedAt: string;
+  author: {
+    id: string;
+    name: string;
+    username: string;
+    avatar: string | null;
+  };
+}
+
 const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
+ const [startup, setStartup] = useState<Startup | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [similarStartups, setSimilarStartups] = useState<Startup[]>([]);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    const fetchStartup = async () => {
+      try {
+        console.log("🔍 Fetching startup with ID:", startupId); // Debug log
+        
+        const response = await fetch(`/api/startup/${startupId}`);
+        const data = await response.json();
+
+        console.log("📦 API Response:", data); // Debug log
+
+        if (response.ok) {
+          console.log("✅ Startup fetched successfully:", data.startup);
+          setStartup(data.startup);
+        } else {
+          console.log("❌ Error fetching startup:", data.error);
+          setError(data.error || "Startup not found");
+        }
+      } catch (error) {
+        console.error("💥 Network error:", error);
+        setError('Failed to load startup');
+      } finally {
+        setLoading(false); // ← Fixed: Always set loading to false
+      }
+    };
+
+    if (startupId) {
+      fetchStartup(); // ← Fixed: Call outside try/catch
+    }
+  }, [startupId]);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  if (error || !startup) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            {error || 'Startup not found'}
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Startup ID: {startupId}
+          </p>
+          <Link 
+            href="/"
+            className="bg-pink-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-pink-600 transition-colors"
+          >
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+
   return (
     <div className="w-full">
       {/* Hero Section with vertical lines pattern */}
@@ -19,7 +107,7 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
           {/* Date Badge */}
           <div className="inline-block mb-8">
             <div className="bg-yellow-400 text-black px-6 py-2 rounded-full font-bold text-sm uppercase tracking-wider transform -rotate-1 shadow-lg">
-              OCTOBER 5, 2024
+              {startup ? formatDate(startup.createdAt) : ''}
             </div>
           </div>
 
@@ -27,15 +115,14 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
           <div className="mb-8">
             <h1 className="text-white font-black text-4xl md:text-6xl lg:text-7xl leading-tight mb-4">
               <div className="bg-black px-6 py-3 inline-block transform -skew-x-2">
-                JSM ACADEMY MASTERCLASS
+                  {startup?.title}
               </div>
             </h1>
           </div>
 
           {/* Subtitle */}
           <p className="text-white text-lg md:text-xl mb-12 max-w-4xl mx-auto font-medium">
-            An online platform offering project-based learning for web developers, aimed at leveling up junior 
-            to mid-level developers by focusing on real-world applications.
+            {startup?.description}
           </p>
         </div>
       </section>
@@ -54,12 +141,12 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
                 <span className="text-white font-bold text-xl">AH</span>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-black">Adrian Hajdin - JS Mastery</h3>
-                <p className="text-gray-600">@adrianhajdin</p>
+                <h3 className="text-xl font-bold text-black">{startup?.author.name}</h3>
+                <p className="text-gray-600">@{startup?.author.username}</p>
               </div>
             </div>
             <div className="bg-pink-100 text-pink-700 px-4 py-2 rounded-full font-bold">
-              Education
+              {startup?.category}
             </div>
           </div>
 
@@ -68,36 +155,10 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
             <h2 className="text-3xl font-bold text-black mb-6">Pitch details</h2>
             
             <div className="prose prose-lg max-w-none text-gray-700">
-              <p className="mb-4">
-                <strong>EcoCart</strong> is an innovative e-commerce platform designed for eco-conscious 
-                shoppers looking to make a <strong>positive environmental</strong> impact with their purchases.
-              </p>
-              
-              <p className="mb-4">
-                We connect users with local businesses that offer <strong>eco-friendly</strong>, sustainable 
-                products across categories like home goods, fashion, beauty, and more.
-              </p>
-              
-              <p className="mb-4">
-                By partnering with small and medium-sized enterprises committed to sustainability, we aim to 
-                reduce carbon footprints and <strong>promote greener consumer choices</strong>.
-              </p>
-              
-              <p className="mb-4">
-                Our platform not only <strong>helps users find ethically</strong> sourced and 
-                <strong> environmentally responsible</strong> products but also offers features like carbon 
-                offset tracking, <strong>green certifications</strong>, and <strong>personalized sustainability goals</strong>.
-              </p>
-              
-              <p className="mb-4">
-                EcoCart is built to <strong>encourage mindful shopping</strong>, making it easier for people to 
-                reduce waste, support local communities, and contribute to a more <strong>sustainable</strong> future.
-              </p>
-              
-              <p className="font-semibold">
-                Our mission is simple: <strong>Shop better, live better, and create a greener world—one 
-                purchase at a time</strong>.
-              </p>
+              <div dangerouslySetInnerHTML={{
+                __html: (startup?.pitch ?? '').replace(/\n/g, ',br/>')
+              }}
+              />
             </div>
           </div>
 

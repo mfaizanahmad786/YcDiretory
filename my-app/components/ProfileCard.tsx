@@ -1,9 +1,12 @@
+'use client'
 import React from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import Image from 'next/image';
 import decoration from '../public/assets/public/SVG.png';
+import {useSession} from 'next-auth/react'
 
 const ProfileCard = () => {
+  const {data: session, status} = useSession()
   return (
     <div className="relative">
       {/* SVG Decoration positioned above top left border */}
@@ -19,12 +22,12 @@ const ProfileCard = () => {
 
       {/* Black shadow div behind NATHAN SMITH - rotated counter-clockwise */}
       <div className="absolute -top-4 left-12 z-10 bg-black px-2 py-2 rounded-2xl border-4 border-black w-fit text-center font-bold text-xl transform -rotate-3">
-        <span className="opacity-0">NATHAN SMITH</span>
+        <span className="opacity-0">{session?.user?.name}</span>
       </div>
 
       {/* NATHAN SMITH name badge overlapping the card */}
       <div className="absolute -top-5 left-13 z-20 bg-white text-black px-2 py-2 rounded-2xl border-4 border-black w-fit text-center font-extrabold text-xl shadow-lg">
-        NATHAN SMITH
+        {session?.user?.name}
       </div>
  
       <div className="bg-[#EE2B69] rounded-3xl border-4 border-black p-6 text-white relative overflow-hidden shadow-lg mt-3">
@@ -40,7 +43,7 @@ const ProfileCard = () => {
 
       {/* Username */}
       <div className="text-center mb-2">
-        <h2 className="text-3xl font-extrabold">@nathansmith</h2>
+        <h2 className="text-3xl font-extrabold">@{session?.user?.username}</h2>
       </div>
 
       {/* Bio */}
