@@ -72,6 +72,36 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
     });
   };
 
+  const convertMarkdownToHTML = (text: string) => {
+  return text
+    // Convert **bold** to <strong>
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    // Convert bullet points
+    .replace(/^- (.*$)/gim, '<li>$1</li>')
+    // Convert multiple consecutive <li> tags to proper <ul>
+    .replace(/(<li>[\s\S]*<\/li>)/g, '<ul>$1</ul>')
+    // Convert newlines to <br>
+    .replace(/\n/g, '<br/>')
+    // Clean up extra breaks around lists
+    .replace(/<br\/><ul>/g, '<ul>')
+    .replace(/<\/ul><br\/>/g, '</ul>');
+};
+
+
+
+  // Show loading state while fetching data
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading startup details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state only after loading is complete and there's an actual error
   if (error || !startup) {
     return (
       <div className="w-full min-h-screen flex items-center justify-center bg-gray-50">
@@ -156,14 +186,14 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
             
             <div className="prose prose-lg max-w-none text-gray-700">
               <div dangerouslySetInnerHTML={{
-                __html: (startup?.pitch ?? '').replace(/\n/g, ',br/>')
+                __html: convertMarkdownToHTML(startup?.pitch ?? '')
               }}
               />
             </div>
           </div>
 
           {/* Similar Startups Section */}
-          <div className="mb-12">
+          {/* <div className="mb-12">
             <h2 className="text-3xl font-bold text-black mb-8">Similar startups</h2>
             <div className="flex justify-center">
               <StartupCard 
@@ -178,7 +208,7 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
                 description="A mobile app that helps users track and reduce their carbo and..."
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

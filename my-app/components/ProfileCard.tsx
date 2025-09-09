@@ -1,12 +1,53 @@
 'use client'
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import Image from 'next/image';
 import decoration from '../public/assets/public/SVG.png';
 import {useSession} from 'next-auth/react'
 
+interface UserProfile {
+  bio: string | null;
+  startupCount: number
+}
+
 const ProfileCard = () => {
   const {data: session, status} = useSession()
+  const [userProfile,setUserProfile] = useState<UserProfile | null>(null)
+  const [loading,setLoading] = useState(true)
+
+  useEffect(()=>{
+    const fetchUserData = async () => {
+      if(!session?.user?.id) return
+
+      try{
+        const response = await fetch(`/api/user/${session.user.id}`)
+        const data = await response.json()
+
+        if(response.ok){
+          setUserProfile({bio:data.user.bio,startupCount: data.user.startupCount})
+        }
+      }catch(error){
+        console.log(error)
+      }finally{
+        setLoading(false)
+      }
+    }
+    fetchUserData()
+  },[session])  
+
+  if (loading) {
+    return (
+      <div className="bg-gradient-to-br from-pink-500 to-red-500 rounded-3xl p-6 text-white">
+        <div className="animate-pulse">
+          <div className="w-20 h-20 bg-white/20 rounded-full mx-auto mb-4"></div>
+          <div className="h-4 bg-white/20 rounded mb-2"></div>
+          <div className="h-3 bg-white/20 rounded mb-4"></div>
+        </div>
+      </div>
+    );
+  }
+
+
   return (
     <div className="relative">
       {/* SVG Decoration positioned above top left border */}
@@ -48,25 +89,18 @@ const ProfileCard = () => {
 
       {/* Bio */}
       <div className="text-center mb-6">
-        <p className="text-sm opacity-90">Next.js Enthusiast & Educator</p>
+        <p className="text-sm opacity-90">{userProfile?.bio}</p>
       </div>
 
       {/* Location */}
-      <div className="flex items-center justify-center text-sm opacity-90">
-        <FaMapMarkerAlt className="mr-2" />
-        <span>San Francisco, CA</span>
-      </div>
+      
 
       {/* Stats or additional info can be added here */}
       <div className="mt-6 pt-4 border-t border-white/20">
-        <div className="grid grid-cols-2 gap-4 text-center">
+        <div className="grid gap-4 text-center">
           <div>
-            <div className="font-bold text-lg">12</div>
+            <div className="font-bold text-lg">{userProfile?.startupCount || 0}</div>
             <div className="text-xs opacity-75">Startups</div>
-          </div>
-          <div>
-            <div className="font-bold text-lg">2.5k</div>
-            <div className="text-xs opacity-75">Followers</div>
           </div>
         </div>
       </div>

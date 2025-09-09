@@ -8,27 +8,18 @@ import { error } from "console";
 export async function GET(request: NextRequest) {
     try {
 
-        const session = await getServerSession(authOptions)
-
-        if (!session || !session.user) {
-            return NextResponse.json(
-                { error: "Unauthorized, please sign in" },
-                { status: 401 }
-            )
-        }
-
+        
         const { searchParams } = new URL(request.url)
         const authorId = searchParams.get('authorId');
 
-        if (!authorId) {
-            return NextResponse.json({
-                error: "No author id specified"
-            })
+        let whereClause: any = {}
+
+        if(authorId){
+            whereClause.authorId = authorId
         }
 
-
         const startups = await prisma.startup.findMany({
-            where: { authorId: authorId },
+            where: whereClause,
             include: {
                 author: {
                     select: {

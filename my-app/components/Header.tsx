@@ -3,11 +3,21 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import logo from '../public/assets/public/logo.png'
-import { useSession } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import { stat } from 'fs'
+import { useRouter } from 'next/navigation'
 
 const Header = () => {
   const {data: session,status} = useSession()
+  const router = useRouter()
+
+  const handleAuthAction = () => {
+    if(status === "unauthenticated"){
+      router.push('/signin')
+    }else{
+      signOut({callbackUrl: '/' })
+    }
+  }
   return (
     <header className="w-full bg-white py-4 px-6">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -33,15 +43,13 @@ const Header = () => {
           >
             {status === "unauthenticated" ? "" : "Create"}
           </Link>
-          <Link 
-            href={status === "unauthenticated" ? "/signin" : "/"}
-            
-            >
-          <button className="text-red-500 hover:text-red-600 font-bold cursor-pointer">
+          
+          <button className="text-red-500 hover:text-red-600 font-bold cursor-pointer"
+          onClick={handleAuthAction}>
             {status === "unauthenticated" ? "Login" : "Logout"}
           </button>
-          </Link>
-          {/* Profile Picture */}
+          
+          {/* Profile Picture */} 
           {status === "authenticated" ? 
           <Link href="/profile" className="w-10 h-10 rounded-full overflow-hidden hover:ring-2 hover:ring-pink-500 transition-all">
             <img 
