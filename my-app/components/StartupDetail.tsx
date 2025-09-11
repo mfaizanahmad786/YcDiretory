@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import StartupCard from './StartupCard';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-
+import FloatingViewsCompact from './FloatingViews';
 interface StartupDetailProps {
   startupId: string;
 }
@@ -124,7 +124,9 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
   }
 
 
+
   return (
+
     <div className="w-full">
       {/* Hero Section with vertical lines pattern */}
       <section className="w-full bg-gradient-to-br from-pink-500 via-pink-600 to-red-500 min-h-[60vh] flex items-center justify-center relative overflow-hidden">
@@ -211,6 +213,7 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
           </div> */}
         </div>
       </div>
+      {startup && <FloatingViewsCompact views={startup.views} />}
     </div>
   );
 };

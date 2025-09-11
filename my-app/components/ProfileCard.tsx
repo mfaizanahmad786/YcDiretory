@@ -62,13 +62,13 @@ const ProfileCard = () => {
       </div>
 
       {/* Black shadow div behind NATHAN SMITH - rotated counter-clockwise */}
-      <div className="absolute -top-4 left-12 z-10 bg-black px-2 py-2 rounded-2xl border-4 border-black w-fit text-center font-bold text-xl transform -rotate-3">
+      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10 bg-black px-4 py-2 rounded-2xl border-4 border-black min-w-fit text-center font-bold text-xl -rotate-3">
         <span className="opacity-0">{session?.user?.name}</span>
       </div>
 
       {/* NATHAN SMITH name badge overlapping the card */}
-      <div className="absolute -top-5 left-13 z-20 bg-white text-black px-2 py-2 rounded-2xl border-4 border-black w-fit text-center font-extrabold text-xl shadow-lg">
-        {session?.user?.name}
+      <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 z-20 bg-white text-black px-4 py-2 rounded-2xl border-4 border-black min-w-fit flex items-center justify-center font-extrabold text-xl shadow-lg">
+        <span className="text-center">{session?.user?.name}</span>
       </div>
  
       <div className="bg-[#EE2B69] rounded-3xl border-4 border-black p-6 text-white relative overflow-hidden shadow-lg mt-3">

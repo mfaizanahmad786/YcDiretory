@@ -8,7 +8,6 @@ import { useSession } from 'next-auth/react';
 // Otherwise, update the import path to the correct location, for example:
 import ProfileCard from '../../components/ProfileCard';
 import StartupCard from '@/components/StartupCard';
-import { stat } from 'fs';
 import Link from 'next/link';
 
 
@@ -40,7 +39,7 @@ const ProfilePage = () => {
             try {
                 if (!session?.user?.id) return
 
-                const response = await fetch(`api/startups?auhorId=${session.user.id}`)
+                const response = await fetch(`/api/startups?authorId=${session.user.id}`)
                 const data = await response.json()
 
                 if (response.ok) {
