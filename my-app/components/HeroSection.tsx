@@ -1,6 +1,17 @@
-import React from 'react';
+'use client'
+import React,{useState} from 'react';
+import {useRouter} from 'next/navigation'
 
 const HeroSection = () => {
+  const [searchTerm,setSearchTerm] = useState('')
+  const router = useRouter()
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if(searchTerm.trim()){
+      router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`)
+    }
+  }
   return (
     <section className="w-full bg-gradient-to-br from-pink-500 via-pink-600 to-red-500 min-h-[80vh] flex items-center justify-center relative overflow-hidden">
       {/* Background Pattern - Vertical Lines */}
@@ -35,12 +46,13 @@ const HeroSection = () => {
         </p>
 
         {/* Search Bar */}
-        <div className="max-w-2xl mx-auto">
+        <form className="max-w-2xl mx-auto" onSubmit={handleSearch}>
           <div className="relative">
             <input
               type="text"
               placeholder="SEARCH STARTUP"
               className="w-full px-6 py-4 text-lg font-bold text-gray-800 bg-white rounded-full border-4 border-black outline-none shadow-lg placeholder-gray-600"
+              onChange={(e)=>setSearchTerm(e.target.value)}
             />
             <button className="absolute right-2 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black text-white rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors">
               <svg 
@@ -58,7 +70,7 @@ const HeroSection = () => {
               </svg>
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </section>
   );

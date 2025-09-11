@@ -3,12 +3,14 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(request:NextRequest,{params}:{params:{id:string}}) {
+export async function GET(request:NextRequest,{params}:{params:Promise<{id:string}>}) {
     try{
-    
+        
+        const {id} = await params;
+
         const startup = await prisma.startup.findUnique({
             where:{
-                id: await params.id
+                id: id
             },
             include:{
                 author:{
@@ -30,7 +32,7 @@ export async function GET(request:NextRequest,{params}:{params:{id:string}}) {
         }
 
         await prisma.startup.update({
-            where:{id: params.id},
+            where:{id:id},
             data:{views:{increment:1}}
         })
 
