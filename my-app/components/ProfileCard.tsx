@@ -1,6 +1,5 @@
 'use client'
 import React,{useEffect,useState} from 'react';
-import { FaMapMarkerAlt } from 'react-icons/fa';
 import Image from 'next/image';
 import decoration from '../public/assets/public/SVG.png';
 import {useSession} from 'next-auth/react'
@@ -11,7 +10,7 @@ interface UserProfile {
 }
 
 const ProfileCard = () => {
-  const {data: session, status} = useSession()
+  const {data: session} = useSession()
   const [userProfile,setUserProfile] = useState<UserProfile | null>(null)
   const [loading,setLoading] = useState(true)
 

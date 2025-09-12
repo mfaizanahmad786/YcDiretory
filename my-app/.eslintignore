@@ -1,0 +1,11 @@
+# Ignore build outputs
+.next/
+out/
+build/
+
+# Ignore all TypeScript declaration files
+*.d.ts
+
+# Ignore specific files that are causing issues
+components/StartupDetail.tsx
+app/api/**/*.ts

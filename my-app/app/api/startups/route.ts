@@ -2,17 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
-import { describe } from "node:test";
-import { error } from "console";
 
 export async function GET(request: NextRequest) {
     try {
-
-        
         const { searchParams } = new URL(request.url)
         const authorId = searchParams.get('authorId');
 
-        let whereClause: any = {}
+        const whereClause: { authorId?: string } = {}
 
         if(authorId){
             whereClause.authorId = authorId

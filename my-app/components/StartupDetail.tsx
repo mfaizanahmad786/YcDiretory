@@ -1,8 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import StartupCard from './StartupCard';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import FloatingViewsCompact from './FloatingViews';
 interface StartupDetailProps {
@@ -31,8 +29,6 @@ const StartupDetail: React.FC<StartupDetailProps> = ({ startupId }) => {
  const [startup, setStartup] = useState<Startup | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [similarStartups, setSimilarStartups] = useState<Startup[]>([]);
-  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchStartup = async () => {

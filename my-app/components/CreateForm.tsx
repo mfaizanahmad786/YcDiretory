@@ -23,7 +23,7 @@ const CreateForm = () => {
 
   const router = useRouter()
 
-  const {data: session, status} = useSession()
+  const {status} = useSession()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -63,7 +63,7 @@ const CreateForm = () => {
       }else{
         setError(data.error || "Something went wrong")
       }
-    }catch(error){
+    }catch{
       setError("Network error")
     }
   };

@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
-import { SiCucumber } from "react-icons/si";
 
 export async function GET(request:NextRequest,
     {params} : {params: Promise<{id: string}>}
@@ -42,7 +39,7 @@ export async function GET(request:NextRequest,
         })
         
 
-    }catch(error){
+    }catch{
         return NextResponse.json(
             {error:"Failed to fetch user details"},
             {status:500}

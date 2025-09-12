@@ -58,7 +58,7 @@ export default function TestAuth() {
             </div>
 
             <div className="bg-blue-50 p-4 rounded-lg mb-6">
-              <h3 className="font-bold mb-2">🎉 What's Working:</h3>
+              <h3 className="font-bold mb-2">🎉 What&apos;s Working:</h3>
               <ul className="list-disc list-inside text-sm space-y-1">
                 <li>✅ User registration (signup)</li>
                 <li>✅ User login (signin)</li>

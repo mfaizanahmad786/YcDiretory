@@ -3,12 +3,11 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import logo from '../public/assets/public/logo.png'
-import { signIn, signOut, useSession } from 'next-auth/react'
-import { stat } from 'fs'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 const Header = () => {
-  const {data: session,status} = useSession()
+  const {data: session, status} = useSession()
   const router = useRouter()
 
   const handleAuthAction = () => {
@@ -50,15 +49,25 @@ const Header = () => {
           </button>
           
           {/* Profile Picture */} 
-          {status === "authenticated" ? 
-          <Link href="/profile" className="w-10 h-10 rounded-full overflow-hidden hover:ring-2 hover:ring-pink-500 transition-all">
-            <img 
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" 
-              alt="Profile" 
-              className="w-full h-full object-cover"
-            />
-          </Link>
-          : <div></div>}
+          {status === "authenticated" && (
+            <Link href="/profile" className="w-10 h-10 rounded-full overflow-hidden hover:ring-2 hover:ring-pink-500 transition-all">
+              {session?.user?.image ? (
+                <Image
+                  src={session.user.image}
+                  alt="Profile"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-pink-500 to-red-500 flex items-center justify-center">
+                  <span className="text-white font-bold">
+                    {session?.user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                  </span>
+                </div>
+              )}
+            </Link>
+          )}
         </div>
       </div>
     </header>

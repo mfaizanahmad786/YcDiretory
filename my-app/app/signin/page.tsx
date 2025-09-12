@@ -1,11 +1,11 @@
 'use client'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function SignIn() {
+function SignInContent() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -116,7 +116,7 @@ export default function SignIn() {
 
                 <div className="mt-6 text-center">
                     <p className="text-gray-600">
-                        Don't have an account?{' '}
+                        Don&apos;t have an account?{' '}
                         <Link href="/signup" className="text-pink-500 font-bold hover:text-pink-600">
                             Sign Up
                         </Link>
@@ -124,5 +124,17 @@ export default function SignIn() {
                 </div>
             </div>
         </div>
+    )
+}
+
+export default function SignIn() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gradient-to-br from-pink-500 via-pink-600 to-red-500 flex items-center justify-center">
+                <div className="text-white text-xl">Loading...</div>
+            </div>
+        }>
+            <SignInContent />
+        </Suspense>
     )
 }
